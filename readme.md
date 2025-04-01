@@ -1,3 +1,3 @@
 # Projectweek Apothecare
 
-The Apothecare main (and sole) repo.
+The Apothecare main (aand sole) repo.
