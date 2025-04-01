@@ -1,3 +1,10 @@
 # Projectweek Apothecare
 
-The Apothecare main (aand sole) repo.
+The Apothecare main (and sole) repo.
+
+## Developers
+
+-   JTnadrooi
+-   schowzgit1
+-   a
+-   a
