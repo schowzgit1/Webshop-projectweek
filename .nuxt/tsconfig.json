@@ -80,6 +80,9 @@
       "public": [
         "../public"
       ],
+      "public/*": [
+        "../public/*"
+      ],
       "#app": [
         "../node_modules/nuxt/dist/app"
       ],
@@ -99,7 +102,7 @@
         "./imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/84b0e6ab-746d-4aa7-a066-0bf9c418d763"
+        "./manifest/meta/dev"
       ],
       "#components": [
         "./components"
@@ -143,6 +146,8 @@
     "./nuxt.d.ts",
     "../.config/nuxt.*",
     "../**/*",
+    "../node_modules/nuxt-windicss/runtime",
+    "../node_modules/nuxt-windicss/dist/runtime",
     "../node_modules/@nuxt/devtools/runtime",
     "../node_modules/@nuxt/devtools/dist/runtime",
     "../node_modules/@nuxt/telemetry/runtime",
@@ -153,8 +158,11 @@
     "../dist",
     "../node_modules",
     "../node_modules/nuxt/node_modules",
+    "../node_modules/nuxt-windicss/node_modules",
     "../node_modules/@nuxt/devtools/node_modules",
     "../node_modules/@nuxt/telemetry/node_modules",
+    "../node_modules/nuxt-windicss/runtime/server",
+    "../node_modules/nuxt-windicss/dist/runtime/server",
     "../node_modules/@nuxt/devtools/runtime/server",
     "../node_modules/@nuxt/devtools/dist/runtime/server",
     "../node_modules/@nuxt/telemetry/runtime/server",
