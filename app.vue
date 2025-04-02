@@ -6,6 +6,7 @@
           <h1><NuxtLink to="/medicijnen">ApotheCare</NuxtLink></h1>
         </div>
         <div class="nav-links">
+          <NuxtLink to="/contact">Contact ons</NuxtLink>
           <NuxtLink to="/medicijnen">Medicijnen</NuxtLink>
           <button class="login-btn">Inloggen</button>
         </div>

@@ -10,5 +10,6 @@ const router = useRouter();
 
 onMounted(() => {
   router.push('/medicijnen');
+  router.push('/contact');
 });
 </script> 
