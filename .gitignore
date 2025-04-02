@@ -1,5 +1,1 @@
-node_modules/
-.nuxt/
-.ignore
-package-lock.json
-.vscode/
+node_modules
