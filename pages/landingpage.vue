@@ -36,13 +36,6 @@
 </template>
 
 <style scoped>
-:root {
-    --c1: #2466e1;
-    --c2: #eff6ff;
-    --text-color: #000000;
-    --bg: #ffffff;
-}
-
 * {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -52,7 +45,7 @@
 
 #header {
     height: 10vh;
-    background-color: var(--bg);
+    background-color: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -60,7 +53,7 @@
 }
 
 #main {
-    background-color: var(--c2);
+    background-color: #eff6ff;
     height: 66vh;
     display: flex;
     justify-content: space-between;
@@ -71,35 +64,26 @@
     width: 45%;
 }
 
-/* Centering content in the Left div */
 #main > div:first-child {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* Vertically center */
     align-items: center;
-    /* Horizontally center */
     height: 100%;
-    /* Ensure the div takes full height */
 }
 
-/* Centering content in the Right div */
 #main > div:last-child {
     display: flex;
     justify-content: center;
-    /* Horizontally center */
     align-items: center;
-    /* Vertically center */
     height: 100%;
-    /* Ensure the div takes full height */
 }
 
 #footer {
     height: 20vh;
-    background-color: var(--bg);
+    background-color: #ffffff;
     display: flex;
     justify-content: space-around;
-    /* Verdeelt de tegels gelijkmatig */
     align-items: center;
     padding: 20px;
 }
@@ -114,9 +98,7 @@
     width: 25%;
     text-align: center;
     border-radius: 10px;
-    /* Mooie afgeronde hoeken */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    /* Schaduw effect */
     text-align: left;
 }
 
@@ -135,9 +117,9 @@ button {
 }
 
 button.primary {
-    background-color: var(--c1);
+    background-color: #2466e1;
     color: white;
-    border: 2px solid var(--c1);
+    border: 2px solid #2466e1;
     border-radius: 5px;
 }
 
