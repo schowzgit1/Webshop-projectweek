@@ -1,13 +1,4 @@
 <template>
-    <div id="header">
-        LOGO
-        <div id="buttonContainer">
-            <button>Medicijnen</button>
-            <button>Bestellingen</button>
-            <button>Contact</button>
-            <button class="primary">Inloggen</button>
-        </div>
-    </div>
     <div id="main">
         <div>
             <h1>Uw online hypotheek voor al uw medicijnen.</h1>
