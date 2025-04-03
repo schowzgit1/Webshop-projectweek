@@ -30,7 +30,7 @@
         <div class="footer-section">
           <h3>Klantenservice</h3>
           <ul>
-            <li><a href="#">Contact</a></li>
+            <li><NuxtLink to="/contact">Contact ons</NuxtLink></li>
             <li><a href="#">Veelgestelde vragen</a></li>
             <li><a href="#">Verzending</a></li>
             <li><a href="#">Retourneren</a></li>

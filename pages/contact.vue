@@ -8,24 +8,29 @@
 
       <div class="contact-container">
         <!-- form -->
-        <form class="contact-form">
-          <h2>Stuur ons een bericht</h2>
-          <label>Naam</label>
-          <input type="text" placeholder="Uw naam" />
+        <form @submit.prevent="submitForm" class="contact-form">
+    <h2>Stuur ons een bericht</h2>
 
-          <label>E-mail</label>
-          <input type="email" placeholder="Uw e-mail" />
+    <label>Naam</label>
+    <input v-model="name" type="text" required />
 
-          <label>Onderwerp</label>
-          <select>
-            <option>Algemene vraag</option>
-          </select>
+    <label>E-mail</label>
+    <input v-model="email" type="email" required />
 
-          <label>Bericht</label>
-          <textarea placeholder="Uw bericht"></textarea>
+    <label>Onderwerp</label>
+    <select v-model="subject">
+      <option>Algemene vraag</option>
+    </select>
 
-          <button type="submit">Verstuur bericht</button>
-        </form>
+    <label>Bericht</label>
+    <textarea v-model="message" required></textarea>
+
+    <button type="submit" :disabled="loading">
+      {{ loading ? "Versturen..." : "Verstuur bericht" }}
+    </button>
+
+    <p v-if="responseMessage" :class="responseClass">{{ responseMessage }}</p>
+  </form>
 
         <!-- contact information -->
         <div class="contact-info">
@@ -96,3 +101,46 @@ h1, h2, h3, h4 { margin-bottom: 10px; font-weight: bold; }
 
 
 </style>
+
+
+<script setup>
+import { ref } from "vue";
+
+const name = ref("");
+const email = ref("");
+const subject = ref("Algemene vraag");
+const message = ref("");
+const responseMessage = ref("");
+const responseClass = ref("");
+const loading = ref(false);
+
+const submitForm = async () => {
+  loading.value = true;
+
+  const { data, error } = await useFetch("http://localhost/webshop-projectweek/server/api/contact.php", {
+    method: "POST",
+    body: { 
+      name: name.value, 
+      email: email.value, 
+      subject: subject.value, 
+      message: message.value 
+    },
+  });
+
+  if (error.value) {
+    responseMessage.value = "Kan geen verbinding maken met de server.";
+    responseClass.value = "error";
+  } else if (data.value?.success) {
+    responseMessage.value = "Uw bericht is verzonden!";
+    responseClass.value = "success";
+    name.value = "";
+    email.value = "";
+    message.value = "";
+  } else {
+    responseMessage.value = "Er is een fout opgetreden: " + data.value?.error;
+    responseClass.value = "error";
+  }
+
+  loading.value = false;
+};
+</script>
