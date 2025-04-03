@@ -3,7 +3,7 @@
     <header class="header">
       <div class="container header-container">
         <div class="logo">
-          <h1><NuxtLink to="/medicijnen">ApotheCare</NuxtLink></h1>
+          <h1><NuxtLink to="/landingpage">ApotheCare</NuxtLink></h1>
         </div>
         <div class="nav-links">
           <NuxtLink to="/contact">Contact ons</NuxtLink>
