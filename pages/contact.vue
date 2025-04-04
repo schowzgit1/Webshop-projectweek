@@ -20,6 +20,8 @@
     <label>Onderwerp</label>
     <select v-model="subject">
       <option>Algemene vraag</option>
+      <option>Support</option>
+      <option>Feedback</option>
     </select>
 
     <label>Bericht</label>
@@ -62,7 +64,8 @@
 <style scoped>
 /* main styles */
 .contact-page { font-family: Arial, sans-serif; color: #333; }
-h1, h2, h3, h4 { margin-bottom: 10px; font-weight: bold; }
+h1 { margin-bottom: 10px; font-weight: bold; font-size: 40px;}
+h2, h3, h4 { margin-bottom: 10px; font-weight: bold; }
 
 
 
@@ -99,36 +102,53 @@ h1, h2, h3, h4 { margin-bottom: 10px; font-weight: bold; }
   border-radius: 5px; cursor: pointer; margin-top: 10px;
 }
 
-
 </style>
-
 
 <script setup>
 import { ref } from "vue";
 
+// Form fields
 const name = ref("");
 const email = ref("");
 const subject = ref("Algemene vraag");
 const message = ref("");
+
+// UI state
 const responseMessage = ref("");
 const responseClass = ref("");
 const loading = ref(false);
 
+// Email check
+const isValidEmail = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  return regex.test(email);
+};
+
+// Submit logic
 const submitForm = async () => {
+  responseMessage.value = "";
+  responseClass.value = "";
+
+  if (!isValidEmail(email.value)) {
+    responseMessage.value = "Voer een geldig e-mailadres in.";
+    responseClass.value = "error";
+    return;
+  }
+
   loading.value = true;
 
   const { data, error } = await useFetch("http://localhost/webshop-projectweek/server/api/contact.php", {
     method: "POST",
-    body: { 
-      name: name.value, 
-      email: email.value, 
-      subject: subject.value, 
-      message: message.value 
+    body: {
+      name: name.value,
+      email: email.value,
+      subject: subject.value,
+      message: message.value,
     },
   });
 
   if (error.value) {
-    responseMessage.value = "Kan geen verbinding maken met de server.";
+    responseMessage.value = "Kan geen verbinding maken met de server. Server is off";
     responseClass.value = "error";
   } else if (data.value?.success) {
     responseMessage.value = "Uw bericht is verzonden!";
@@ -137,7 +157,7 @@ const submitForm = async () => {
     email.value = "";
     message.value = "";
   } else {
-    responseMessage.value = "Er is een fout opgetreden: " + data.value?.error;
+    responseMessage.value = "Fout: " + (data.value?.error || "Onbekend probleem.");
     responseClass.value = "error";
   }
 

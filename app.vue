@@ -17,64 +17,52 @@
             <NuxtPage />
         </main>
 
-        <footer>
-            <div class="container footer-container">
-                <div class="footer-section">
-                    <h3>Over Ons</h3>
-                    <ul>
-                        <li><a href="#">Wie zijn wij</a></li>
-                        <li><a href="#">Onze missie</a></li>
-                        <li><a href="#">Locaties</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Klantenservice</h3>
-                    <ul>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Veelgestelde vragen</a></li>
-                        <li><a href="#">Verzending</a></li>
-                        <li><a href="#">Retourneren</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Mijn Account</h3>
-                    <ul>
-                        <li><a href="#">Inloggen</a></li>
-                        <li><a href="#">Registreren</a></li>
-                        <li><a href="#">Mijn gegevens</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Volg Ons</h3>
-                    <div class="social-links">
-                        <a href="#" aria-label="Twitter">
-                            <img
-                                src="/assets/images/twitter.jpg"
-                                alt="Twitter"
-                                class="social-icon"
-                            />
-                        </a>
-                        <a href="#" aria-label="Facebook">
-                            <img
-                                src="/assets/images/facebook.jpg"
-                                alt="Facebook"
-                                class="social-icon"
-                            />
-                        </a>
-                        <a href="#" aria-label="Instagram">
-                            <img
-                                src="/assets/images/instagram.jpg"
-                                alt="Instagram"
-                                class="social-icon"
-                            />
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2025 ApotheCare. Alle rechten voorbehouden.</p>
-            </div>
-        </footer>
+    <footer>
+      <div class="container footer-container">
+        <div class="footer-section">
+          <h3>Over Ons</h3>
+          <ul>
+            <li><a href="#">Wie zijn wij</a></li>
+            <li><a href="#">Onze missie</a></li>
+            <li><a href="#">Locaties</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Klantenservice</h3>
+          <ul>
+            <li><NuxtLink to="/contact">Contact ons</NuxtLink></li>
+            <li><a href="#">Veelgestelde vragen</a></li>
+            <li><a href="#">Verzending</a></li>
+            <li><a href="#">Retourneren</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Mijn Account</h3>
+          <ul>
+            <li><a href="#">Inloggen</a></li>
+            <li><a href="#">Registreren</a></li>
+            <li><a href="#">Mijn gegevens</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Volg Ons</h3>
+          <div class="social-links">
+            <a href="#" aria-label="Twitter">
+              <img src="/assets/images/twitter.jpg" alt="Twitter" class="social-icon">
+            </a>
+            <a href="#" aria-label="Facebook">
+              <img src="/assets/images/facebook.jpg" alt="Facebook" class="social-icon">
+            </a>
+            <a href="#" aria-label="Instagram">
+              <img src="/assets/images/instagram.jpg" alt="Instagram" class="social-icon">
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>© 2025 ApotheCare. Alle rechten voorbehouden.</p>
+      </div>
+    </footer>
 
         <!-- Chat Bot Component -->
         <ChatBot />

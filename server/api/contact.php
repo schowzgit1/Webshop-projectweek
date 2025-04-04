@@ -30,6 +30,12 @@ $email = $conn->real_escape_string($data["email"]);
 $subject = isset($data["subject"]) ? $conn->real_escape_string($data["subject"]) : "Geen onderwerp";
 $message = $conn->real_escape_string($data["message"]);
 
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(["success" => false, "error" => "Ongeldig e-mailadres"]);
+    exit();
+}
+
+
 // SQL-query
 $sql = "INSERT INTO contact_messages (name, email, subject, message) VALUES ('$name', '$email', '$subject', '$message')";
 
@@ -41,3 +47,4 @@ if ($conn->query($sql) === TRUE) {
 
 $conn->close();
 ?>
+

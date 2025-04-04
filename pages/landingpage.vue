@@ -131,9 +131,14 @@ button.primary:hover {
     background-color: darkblue;
 }
 
-#main div h1,
+#main div h1 {
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 50px;
+}
 #main div h3 {
     margin: 10px 0;
+    font-size: 20px;
 }
 
 #main div img {
