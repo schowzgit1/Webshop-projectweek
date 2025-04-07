@@ -1,11 +1,14 @@
 <template>
     <div id="main">
         <div>
-            <h1>Uw online hypotheek voor al uw medicijnen.</h1>
-            <h3>
+            <div class="heading-1">
+                Uw online hypotheek voor al uw medicijnen.
+            </div>
+            <div class="heading-3">
                 Veilig en gemakkelijk uw medicijnen bestellen met persoonlijk
                 advies
-            </h3>
+            </div>
+
             <button>Inloggen</button>
             <button class="primary">Start met bestellen</button>
         </div>
@@ -19,17 +22,17 @@
     <div id="footer">
         <div class="footerTile">
             <img src="assets/images/pills.png" alt="alt" />
-            <h1>Smart Bestelprocess</h1>
+            <div class="heading-1">Smart Bestelprocess</div>
             Eenvouding bestelling met een klik via ons systeem.
         </div>
         <div class="footerTile">
             <img src="assets/images/pills.png" alt="alt" />
-            <h1>24/7 Chat support</h1>
+            <div class="heading-1">24/7 Chat support</div>
             Direct hulp via onze virtual assistant.
         </div>
         <div class="footerTile">
             <img src="assets/images/pills.png" alt="alt" />
-            <h1>Bestelgeschiedenis</h1>
+            <div class="heading-1">Bestelgeschiedenis</div>
             Bekijk en herhaal eenvoudig meerdere bestellingen.
         </div>
     </div>
@@ -50,6 +53,17 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+}
+.heading-1 {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.heading-3 {
+    font-size: 1.2em;
+    font-weight: normal;
+    margin: 10px 0;
 }
 
 #main {
