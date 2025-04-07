@@ -1,3 +1,10 @@
+<!--
+    ============================================
+    Author: Apothecare Team
+    Description: Landingspage Apothecare
+    ============================================
+-->
+
 <template>
     <div id="main">
         <div>
