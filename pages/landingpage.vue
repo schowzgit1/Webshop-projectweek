@@ -30,17 +30,17 @@
         <div class="footerTile">
             <img src="assets/images/pills.png" alt="alt" />
             <div class="heading-1">Smart Bestelprocess</div>
-            Eenvouding bestelling met een klik via ons systeem.
+            <p>Eenvouding bestelling met een klik via ons systeem.</p>
         </div>
         <div class="footerTile">
             <img src="assets/images/pills.png" alt="alt" />
             <div class="heading-1">24/7 Chat support</div>
-            Direct hulp via onze virtual assistant.
+            <p>Direct hulp via onze virtual assistant.</p>
         </div>
         <div class="footerTile">
             <img src="assets/images/pills.png" alt="alt" />
             <div class="heading-1">Bestelgeschiedenis</div>
-            Bekijk en herhaal eenvoudig meerdere bestellingen.
+            <p>Bekijk en herhaal eenvoudig meerdere bestellingen.</p>
         </div>
     </div>
 </template>
