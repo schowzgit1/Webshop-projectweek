@@ -1,171 +1,98 @@
 <template>
-  <div class="login-container">
-    <h1>Inloggen</h1>
-    
-    <div v-if="loading" class="loading-message">
-      Bezig met inloggen...
-    </div>
-    
-    <div v-else-if="error" class="error-message">
-      {{ error }}
-    </div>
-    
-    <form v-else @submit.prevent="handleLogin" class="login-form">
-      <div class="form-group">
-        <label for="username">Gebruikersnaam</label>
-        <input 
-          type="text" 
-          id="username" 
-          v-model="username" 
-          required
-          placeholder="Voer je gebruikersnaam in"
-        />
+  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+      <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Inloggen
+        </h2>
       </div>
-      
-      <div class="form-group">
-        <label for="password">Wachtwoord</label>
-        <input 
-          type="password" 
-          id="password" 
-          v-model="password" 
-          required
-          placeholder="Voer je wachtwoord in"
-        />
+      <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <label for="email" class="sr-only">Email</label>
+            <input
+              id="email"
+              v-model="email"
+              name="email"
+              type="email"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="Email"
+            />
+          </div>
+          <div>
+            <label for="password" class="sr-only">Wachtwoord</label>
+            <input
+              id="password"
+              v-model="password"
+              name="password"
+              type="password"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              placeholder="Wachtwoord"
+            />
+          </div>
+        </div>
+
+        <div v-if="error" class="text-red-500 text-sm text-center">
+          {{ error }}
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Inloggen
+          </button>
+        </div>
+      </form>
+      <div class="text-center">
+        <nuxt-link
+          to="/register"
+          class="font-medium text-indigo-600 hover:text-indigo-500"
+        >
+          Nog geen account? Registreer hier
+        </nuxt-link>
       </div>
-      
-      <button type="submit" class="login-button">Inloggen</button>
-    </form>
-    
-    <div class="register-link">
-      Nog geen account? <NuxtLink to="/register">Registreer hier</NuxtLink>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-
-const username = ref('')
-const password = ref('')
-const error = ref('')
-const loading = ref(false)
-const router = useRouter()
-
-const handleLogin = async () => {
-  try {
-    loading.value = true
-    error.value = ''
-
-    const response = await fetch('/server/api/auth/login.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username.value,
-        password: password.value
-      })
-    })
-
-    const data = await response.json()
-
-    if (data.success) {
-      localStorage.setItem('user', JSON.stringify(data.user))
-      window.dispatchEvent(new Event('storage'))
-      router.push('/landingpage')
-    } else {
-      error.value = data.message || 'Inloggen mislukt'
-      loading.value = false
+<script>
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      error: '',
     }
-  } catch (err) {
-    error.value = 'Er is een probleem met de verbinding'
-    loading.value = false
-  }
-}
-</script>
+  },
+  methods: {
+    async handleLogin() {
+      try {
+        const response = await fetch('http://localhost:8000/api/login.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: this.email,
+            password: this.password,
+          }),
+        })
 
-<style scoped>
-.login-container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+        const data = await response.json()
 
-h1 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 1.5rem;
+        if (data.success) {
+          this.$router.push('/')
+        } else {
+          this.error = data.error
+        }
+      } catch (error) {
+        this.error = 'Er is een fout opgetreden bij het inloggen'
+      }
+    },
+  },
 }
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-label {
-  font-weight: 600;
-  color: #444;
-}
-
-input {
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.login-button {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  background-color: #4CAF50;
-}
-
-.login-button:hover {
-  background-color: #3e8e41;
-}
-
-.error-message {
-  color: #d32f2f;
-  background-color: #ffebee;
-  padding: 0.75rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-}
-
-.loading-message {
-  text-align: center;
-  color: #555;
-  padding: 1rem;
-}
-
-.register-link {
-  margin-top: 1.5rem;
-  text-align: center;
-  color: #666;
-}
-
-.register-link a {
-  color: #2196F3;
-  text-decoration: none;
-}
-
-.register-link a:hover {
-  text-decoration: underline;
-}
-</style> 
+</script> 

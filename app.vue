@@ -8,12 +8,7 @@
                 <div class="nav-links">
                     <NuxtLink to="/contact">Contact ons</NuxtLink>
                     <NuxtLink to="/medicijnen">Medicijnen</NuxtLink>
-                    <template v-if="isLoggedIn">
-                        <NuxtLink v-if="isAdmin" to="/admin" class="admin-link">Admin Dashboard</NuxtLink>
-                        <NuxtLink v-else to="/profile" class="profile-link">Mijn Profiel</NuxtLink>
-                        <button @click="handleLogout" class="logout-btn">Uitloggen</button>
-                    </template>
-                    <NuxtLink v-else to="/login" class="login-btn">Inloggen</NuxtLink>
+                    <button class="login-btn">Inloggen</button>
                 </div>
             </div>
         </header>
@@ -22,7 +17,6 @@
             <NuxtPage />
         </main>
 
-<<<<<<< Updated upstream
     <footer>
       <div class="container footer-container">
         <div class="footer-section">
@@ -69,55 +63,6 @@
         <p>© 2025 ApotheCare. Alle rechten voorbehouden.</p>
       </div>
     </footer>
-=======
-        <footer>
-            <div class="container footer-container">
-                <div class="footer-section">
-                    <h3>Over Ons</h3>
-                    <ul>
-                        <li><a href="#" @click.prevent>Wie zijn wij</a></li>
-                        <li><a href="#" @click.prevent>Onze missie</a></li>
-                        <li><a href="#" @click.prevent>Locaties</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Klantenservice</h3>
-                    <ul>
-                        <li><NuxtLink to="/contact">Contact</NuxtLink></li>
-                        <li><a href="#" @click.prevent>Veelgestelde vragen</a></li>
-                        <li><a href="#" @click.prevent>Verzending</a></li>
-                        <li><a href="#" @click.prevent>Retourneren</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Mijn Account</h3>
-                    <ul>
-                        <li v-if="!isLoggedIn"><NuxtLink to="/login">Inloggen</NuxtLink></li>
-                        <li v-if="!isLoggedIn"><NuxtLink to="/register">Registreren</NuxtLink></li>
-                        <li v-if="isLoggedIn"><NuxtLink to="/profile">Mijn profiel</NuxtLink></li>
-                        <li v-if="isLoggedIn"><a href="#" @click.prevent="handleLogout">Uitloggen</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Volg Ons</h3>
-                    <div class="social-links">
-                        <a href="#" aria-label="Twitter">
-                            <img src="/assets/images/twitter.jpg" alt="Twitter" class="social-icon" />
-                        </a>
-                        <a href="#" aria-label="Facebook">
-                            <img src="/assets/images/facebook.jpg" alt="Facebook" class="social-icon" />
-                        </a>
-                        <a href="#" aria-label="Instagram">
-                            <img src="/assets/images/instagram.jpg" alt="Instagram" class="social-icon" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2025 ApotheCare. Alle rechten voorbehouden.</p>
-            </div>
-        </footer>
->>>>>>> Stashed changes
 
         <!-- Chat Bot Component -->
         <ChatBot />
@@ -125,54 +70,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import ChatBot from "~/components/ChatBot.vue";
-
-const router = useRouter();
-const isLoggedIn = ref(false);
-const isAdmin = ref(false);
-const user = ref(null);
-
-function checkLoginStatus() {
-    try {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            const userData = JSON.parse(storedUser);
-            isLoggedIn.value = true;
-            isAdmin.value = userData.role === 'admin';
-            user.value = userData;
-        } else {
-            isLoggedIn.value = false;
-            isAdmin.value = false;
-            user.value = null;
-        }
-    } catch (err) {
-        console.error('Error checking login status:', err);
-        isLoggedIn.value = false;
-        isAdmin.value = false;
-        user.value = null;
-    }
-}
-
-async function handleLogout() {
-    try {
-        localStorage.removeItem('user');
-        isLoggedIn.value = false;
-        isAdmin.value = false;
-        user.value = null;
-        await router.push('/landingpage');
-        window.location.reload();
-    } catch (err) {
-        console.error('Error logging out:', err);
-    }
-}
-
-// Check login status when component mounts and on route changes
-onMounted(() => {
-    checkLoginStatus();
-    window.addEventListener('storage', checkLoginStatus);
-});
 </script>
 
 <style>
@@ -231,27 +129,14 @@ onMounted(() => {
     color: #333;
 }
 
-.login-btn, .logout-btn, .admin-link, .profile-link {
+.login-btn {
     background-color: #3066f6;
-    color: white !important;
+    color: white;
     border: none;
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
-    text-decoration: none;
-}
-
-.logout-btn {
-    background-color: #f44336;
-}
-
-.admin-link {
-    background-color: #4caf50;
-}
-
-.profile-link {
-    background-color: #ff9800;
 }
 
 /* Search Bar */
@@ -352,70 +237,70 @@ onMounted(() => {
 
 .product-price {
     font-weight: bold;
-    color: #3066f6;
+    font-size: 18px;
+    color: #333;
 }
 
-.add-to-cart-btn {
+.add-to-cart {
     background-color: #3066f6;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
+    padding: 6px 12px;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 14px;
 }
 
 /* Footer */
 footer {
-    background-color: #f5f5f5;
+    background-color: #f8f9fa;
     padding: 40px 0 20px;
     margin-top: auto;
 }
 
 .footer-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 30px;
 }
 
 .footer-section h3 {
     margin-bottom: 15px;
-    color: #333;
+    font-size: 16px;
 }
 
 .footer-section ul {
     list-style: none;
 }
 
-.footer-section ul li {
+.footer-section li {
     margin-bottom: 8px;
 }
 
-.footer-section ul li a {
-    color: #666;
+.footer-section a {
     text-decoration: none;
-}
-
-.footer-section ul li a:hover {
-    color: #3066f6;
+    color: #666;
 }
 
 .social-links {
     display: flex;
-    gap: 10px;
+    gap: 15px;
 }
 
 .social-icon {
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .copyright {
-    text-align: center;
     margin-top: 30px;
+    text-align: center;
     padding-top: 20px;
     border-top: 1px solid #ddd;
     color: #666;
+    font-size: 14px;
 }
 
 /* Responsive Styles */

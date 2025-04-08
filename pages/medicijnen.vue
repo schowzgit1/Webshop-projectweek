@@ -138,19 +138,11 @@ const addToCart = (medicine) => {
   // Here you would implement actual cart functionality
 };
 
-// Function to toggle category
-const toggleCategory = (categoryId) => {
-  if (selectedCategory.value === categoryId) {
-    selectedCategory.value = 'alle';
-  } else {
-    selectedCategory.value = categoryId;
-  }
-  updateQueryParams();
-};
-
 // Function to set active category
 const setCategory = (categoryId) => {
   selectedCategory.value = categoryId;
+  
+  // Update URL without reloading the page
   updateQueryParams();
 };
 
@@ -166,6 +158,7 @@ const updateQueryParams = () => {
     query.category = selectedCategory.value;
   }
   
+  // Replace URL without reloading the page
   router.replace({ query });
 };
 
