@@ -1,3 +1,9 @@
+<!--
+    ============================================
+    Author: Apothecare Team
+    Description: Database configuration for Apothecare
+    ============================================
+-->
 <?php
 $host = "sql7.freesqldatabase.com";
 $user = "sql7771094";  

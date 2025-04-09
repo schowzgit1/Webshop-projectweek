@@ -1,3 +1,9 @@
+<!--
+    ============================================
+    Author: Apothecare Team
+    Description: Login API endpoint for Apothecare
+    ============================================
+-->
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");

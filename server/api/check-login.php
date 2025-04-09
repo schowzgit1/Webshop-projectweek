@@ -1,3 +1,9 @@
+<!--
+    ============================================
+    Author: Apothecare Team
+    Description: Check login status API endpoint for Apothecare
+    ============================================
+-->
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");

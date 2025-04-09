@@ -1,3 +1,9 @@
+<!--
+    ============================================
+    Author: Apothecare Team
+    Description: Contact form API endpoint for Apothecare
+    ============================================
+-->
 <?php
 header("Access-Control-Allow-Origin: *"); // Sta CORS toe als Nuxt en API zich op verschillende servers bevinden
 header("Access-Control-Allow-Methods: POST");

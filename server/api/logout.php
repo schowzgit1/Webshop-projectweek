@@ -1,3 +1,9 @@
+<!--
+    ============================================
+    Author: Apothecare Team
+    Description: Logout API endpoint for Apothecare
+    ============================================
+-->
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
