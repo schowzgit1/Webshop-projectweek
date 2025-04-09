@@ -157,7 +157,7 @@ async function handleRegister() {
 }
 
 .register-form {
-  background-color: white;
+  background-color: #f8f9fa;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -169,6 +169,8 @@ h2 {
   text-align: center;
   margin-bottom: 20px;
   color: #3066f6;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .form-group {

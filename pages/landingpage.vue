@@ -16,8 +16,14 @@
                 advies
             </div>
 
-            <button>Inloggen</button>
-            <button class="primary">Start met bestellen</button>
+            <NuxtLink to="/login" class="button">
+            Inloggen
+            </NuxtLink>
+
+            <NuxtLink to="/medicijnen" class="primary">
+            Start met bestellen 
+            </NuxtLink>
+
         </div>
         <div>
             <img
@@ -137,7 +143,7 @@ button {
     transition: all 0.3s ease;
 }
 
-button.primary {
+.primary {
     background-color: #2466e1;
     color: white;
     border: 2px solid #2466e1;
@@ -148,7 +154,7 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-button.primary:hover {
+.primary:hover {
     background-color: darkblue;
 }
 

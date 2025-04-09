@@ -88,7 +88,7 @@ const handleLogin = async () => {
 <style scoped>
 .login-container {
   max-width: 500px;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 2rem;
   background-color: #f8f9fa;
   border-radius: 8px;
@@ -97,8 +97,10 @@ const handleLogin = async () => {
 
 h1 {
   text-align: center;
-  color: #333;
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
+  color: #3066f6;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .login-form {
@@ -133,11 +135,11 @@ input {
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  background-color: #4CAF50;
+  background-color: #236bde;
 }
 
 .login-button:hover {
-  background-color: #3e8e41;
+  background-color: #2261c7;
 }
 
 .error-message {

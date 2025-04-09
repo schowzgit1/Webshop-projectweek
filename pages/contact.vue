@@ -40,7 +40,7 @@
             <h3>Direct contact</h3>
             <p>📞 +31 (0)20 123 4567</p>
             <p>📧 info@smartapotheek.nl</p>
-            <p>📍 Hoofdstraat 123, 1234 AB Amsterdam</p>
+            <p>🌎 Hoofdstraat 123, 1234 AB Amsterdam</p>
           </div>
 
           <div class="info-block">
@@ -50,11 +50,7 @@
             <p>Zondag: Gesloten</p>
           </div>
 
-          <div class="info-block chatbot">
-            <h3>24/7 Chatbot Assistent</h3>
-            <p>Onze virtuele assistent staat 24/7 klaar om uw vragen te beantwoorden.</p>
-            <button>Start chat</button>
-          </div>
+
         </div>
       </div>
     </main>
@@ -97,7 +93,7 @@ h2, h3, h4 { margin-bottom: 10px; font-weight: bold; }
 .info-block {
   background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: left;
 }
-.chatbot button {
+.chatbot-button {
   background: #236bde; color: white; padding: 5px 15px; border: none;
   border-radius: 5px; cursor: pointer; margin-top: 10px;
 }
