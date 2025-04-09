@@ -15,15 +15,15 @@
       <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="email" class="sr-only">Email</label>
+            <label for="username" class="sr-only">Gebruikersnaam</label>
             <input
-              id="email"
-              v-model="email"
-              name="email"
-              type="email"
+              id="username"
+              v-model="username"
+              name="username"
+              type="text"
               required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Email"
+              placeholder="Gebruikersnaam"
             />
           </div>
           <div>
@@ -69,7 +69,7 @@
 export default {
   data() {
     return {
-      email: '',
+      username: '',
       password: '',
       error: '',
     }
@@ -77,26 +77,55 @@ export default {
   methods: {
     async handleLogin() {
       try {
-        const response = await fetch('http://localhost:8000/api/login.php', {
+        // Debug log
+        console.log('Attempting login with:', { username: this.username, password: this.password })
+
+        const response = await fetch('http://localhost:7860/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer vHrsX9bWGF3AW7fR0hblwIQzSekJQHa1'
           },
           body: JSON.stringify({
-            email: this.email,
-            password: this.password,
-          }),
+            model: "mistral-tiny",
+            messages: [
+              {
+                role: "user",
+                content: `Verifieer de login voor gebruiker ${this.username} met wachtwoord ${this.password}`
+              }
+            ],
+            temperature: 0.7,
+            max_tokens: 150
+          })
         })
 
-        const data = await response.json()
+        // Debug log
+        console.log('Response status:', response.status)
+        console.log('Response headers:', response.headers)
 
-        if (data.success) {
-          this.$router.push('/')
+        const data = await response.json()
+        console.log('Response data:', data)
+
+        if (response.ok) {
+          // Simuleer een succesvolle login voor demo doeleinden
+          const user = {
+            id: 1,
+            username: this.username,
+            role: 'user'
+          }
+          
+          // Store user data in localStorage
+          localStorage.setItem('user', JSON.stringify(user))
+          // Update the app state
+          window.dispatchEvent(new Event('storage'))
+          // Redirect to landing page
+          this.$router.push('/landingpage')
         } else {
-          this.error = data.error
+          this.error = 'Inloggen mislukt. Controleer je gegevens.'
         }
       } catch (error) {
-        this.error = 'Er is een fout opgetreden bij het inloggen'
+        console.error('Login error:', error)
+        this.error = 'Er is een probleem met de verbinding. Controleer of de server draait.'
       }
     },
   },

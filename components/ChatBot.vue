@@ -117,7 +117,8 @@ export default {
       this.isLoading = true;
 
       try {
-        const response = await fetch("http://localhost/server/api/chat.php", {
+        console.log("Sending message to server...");
+        const response = await fetch("http://localhost:8000/api/chat.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -127,7 +128,9 @@ export default {
           }),
         });
 
+        console.log("Response status:", response.status);
         const data = await response.json();
+        console.log("Response data:", data);
 
         if (data.success) {
           this.messages.push({
@@ -135,15 +138,17 @@ export default {
             content: data.response,
           });
         } else {
+          console.error("Error from server:", data.message);
           this.messages.push({
             role: "assistant",
-            content: "Sorry, er is een fout opgetreden. Probeer het later opnieuw.",
+            content: "Sorry, er is een fout opgetreden: " + data.message,
           });
         }
       } catch (error) {
+        console.error("Error sending message:", error);
         this.messages.push({
           role: "assistant",
-          content: "Sorry, er is een fout opgetreden. Probeer het later opnieuw.",
+          content: "Sorry, er is een probleem met de verbinding. Controleer of de servers draaien.",
         });
       } finally {
         this.isLoading = false;
