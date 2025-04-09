@@ -1,405 +1,174 @@
 <template>
-  <div class="chat-container" :class="{ 'chat-open': isChatOpen }">
-    <div class="chat-header" @click="toggleChat">
-      <h3>ApotheCare Hulp</h3>
-      <button class="close-btn" v-if="isChatOpen" @click.stop="toggleChat">×</button>
-    </div>
-    
-    <div class="chat-body" v-if="isChatOpen">
-      <div class="chat-messages" ref="messagesContainer">
-        <div 
-          v-for="(message, index) in messages" 
-          :key="index" 
-          class="message" 
-          :class="message.sender"
-          @click="message.action ? handleActionClick(message.action) : null"
-          :style="{ cursor: message.action ? 'pointer' : 'default' }"
+  <div class="fixed bottom-4 right-4 z-50">
+    <button
+      @click="toggleChat"
+      class="bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors"
+    >
+      <svg
+        v-if="!isOpen"
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+        />
+      </svg>
+      <svg
+        v-else
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+
+    <div
+      v-if="isOpen"
+      class="absolute bottom-16 right-0 w-96 bg-white rounded-lg shadow-xl"
+    >
+      <div class="p-4 border-b">
+        <h3 class="text-lg font-semibold">AI Assistent</h3>
+        <p class="text-sm text-gray-500">
+          Ik ben een AI-assistent. Hoe kan ik je helpen?
+        </p>
+      </div>
+
+      <div class="h-96 overflow-y-auto p-4">
+        <div
+          v-for="(message, index) in messages"
+          :key="index"
+          :class="[
+            'mb-4',
+            message.role === 'user'
+              ? 'text-right'
+              : 'text-left bg-gray-100 rounded-lg p-3',
+          ]"
         >
-          <div class="message-content">
-            <p>{{ message.text }}</p>
-          </div>
+          <p class="text-sm">{{ message.content }}</p>
+        </div>
+        <div v-if="isLoading" class="text-center">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
         </div>
       </div>
-      
-      <div class="chat-input">
-        <input 
-          type="text" 
-          v-model="userInput" 
-          placeholder="Typ uw vraag..." 
-          @keyup.enter="sendMessage"
-        />
-        <button @click="sendMessage">
-          <span>➤</span>
-        </button>
+
+      <div class="p-4 border-t">
+        <form @submit.prevent="sendMessage" class="flex gap-2">
+          <input
+            v-model="newMessage"
+            type="text"
+            placeholder="Type je bericht..."
+            class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <button
+            type="submit"
+            class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+          >
+            Verstuur
+          </button>
+        </form>
       </div>
     </div>
-    
-    <button v-if="!isChatOpen" class="chat-button" @click="toggleChat">
-      <span>💬</span>
-    </button>
   </div>
 </template>
 
-<script setup>
-import { ref, watch, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
+<script>
+export default {
+  data() {
+    return {
+      isOpen: false,
+      messages: [],
+      newMessage: "",
+      isLoading: false,
+    };
+  },
+  methods: {
+    toggleChat() {
+      this.isOpen = !this.isOpen;
+      if (this.isOpen && this.messages.length === 0) {
+        this.messages.push({
+          role: "assistant",
+          content:
+            "Hallo! Ik ben een AI-assistent. Ik kan je helpen met vragen over onze producten, bestellingen of andere informatie. Wat kan ik voor je doen?",
+        });
+      }
+    },
+    async sendMessage() {
+      if (!this.newMessage.trim()) return;
 
-const router = useRouter();
-const isChatOpen = ref(false);
-const userInput = ref('');
-const messages = ref([
-  { text: 'Hallo! Hoe kan ik u helpen bij het vinden van medicijnen of gezondheidsproducten?', sender: 'bot' }
-]);
-const messagesContainer = ref(null);
-
-// Predefined responses based on keywords with navigation links
-const responses = {
-  'ibuprofen': {
-    text: 'Ibuprofen 400mg is beschikbaar in onze pijnstillers categorie. U kunt deze hier bekijken of klik op de link om er direct naartoe te gaan.',
-    action: {
-      type: 'navigate',
-      path: '/medicijnen',
-      query: { category: 'pijnstillers' }
-    }
-  },
-  'paracetamol': {
-    text: 'Paracetamol 500mg is beschikbaar in onze pijnstillers categorie. U kunt deze hier bekijken of klik op de link om er direct naartoe te gaan.',
-    action: {
-      type: 'navigate',
-      path: '/medicijnen',
-      query: { category: 'pijnstillers' }
-    }
-  },
-  'vitamine': {
-    text: 'We hebben diverse vitamines, waaronder Vitamine C en multivitamines. Bekijk ons assortiment hier door op de link te klikken.',
-    action: {
-      type: 'navigate',
-      path: '/medicijnen',
-      query: { category: 'vitamines' }
-    }
-  },
-  'vitamine c': {
-    text: 'Vitamine C 1000mg is beschikbaar in onze vitamines categorie. Klik op de link om direct naar dit product te gaan.',
-    action: {
-      type: 'navigate',
-      path: '/medicijnen',
-      query: { search: 'Vitamine C' }
-    }
-  },
-  'multivitamine': {
-    text: 'Ons Multivitamine Complex vindt u in onze vitamines categorie. Klik op de link om direct naar dit product te gaan.',
-    action: {
-      type: 'navigate',
-      path: '/medicijnen',
-      query: { search: 'Multivitamine' }
-    }
-  },
-  'pijn': {
-    text: 'Voor pijnstillers zoals Paracetamol en Ibuprofen kunt u in onze pijnstillers categorie kijken. Klik op de link om er direct naartoe te gaan.',
-    action: {
-      type: 'navigate',
-      path: '/medicijnen',
-      query: { category: 'pijnstillers' }
-    }
-  },
-  'koorts': {
-    text: 'Bij koorts worden vaak Paracetamol of Ibuprofen aangeraden. Deze vindt u in onze pijnstillers categorie. Klik op de link om er direct naartoe te gaan.',
-    action: {
-      type: 'navigate',
-      path: '/medicijnen',
-      query: { category: 'pijnstillers' }
-    }
-  },
-  'verkoudheid': {
-    text: 'Voor verkoudheidsklachten is Vitamine C vaak aan te raden. Bekijk onze vitamines door op de link te klikken.',
-    action: {
-      type: 'navigate',
-      path: '/medicijnen',
-      query: { category: 'vitamines' }
-    }
-  },
-  'bestellen': {
-    text: 'U kunt medicijnen bestellen door ze toe te voegen aan uw winkelwagen en vervolgens af te rekenen. Heeft u hulp nodig bij het bestellen?',
-    action: null
-  },
-  'betalen': {
-    text: 'Wij accepteren diverse betaalmethoden, waaronder iDEAL, creditcard en PayPal.',
-    action: null
-  },
-  'levering': {
-    text: 'Bestellingen worden doorgaans binnen 1-2 werkdagen geleverd. Voor bestellingen boven €20 is de verzending gratis.',
-    action: null
-  },
-  'contact': {
-    text: 'U kunt contact met ons opnemen via info@apothecare.nl of telefonisch op 020-123-4567 tijdens kantooruren.',
-    action: null
-  },
-  'help': {
-    text: 'Ik kan u helpen met: het zoeken van medicijnen (paracetamol, ibuprofen, vitamines), informatie over bestellen, betalen, levering of contact. Wat wilt u weten?',
-    action: null
-  },
-  'medicijnen': {
-    text: 'U kunt al onze medicijnen bekijken door op de link te klikken.',
-    action: {
-      type: 'navigate',
-      path: '/medicijnen'
-    }
-  }
-};
-
-// Default fallback responses
-const fallbackResponses = [
-  'Dat is een goede vraag. Kan ik u helpen bij het vinden van specifieke medicijnen zoals paracetamol of ibuprofen?',
-  'Excuses, ik begrijp uw vraag niet helemaal. Kunt u specifieker zijn over welk medicijn u zoekt? Bijvoorbeeld "paracetamol" of "vitamine c"?',
-  'Ik kan u helpen bij het vinden van medicijnen, informatie over bestellingen of algemene vragen over gezondheidsproducten. Typ "help" voor meer informatie.',
-  'Ik wil u graag helpen. Kunt u uw vraag anders formuleren? U kunt bijvoorbeeld vragen naar "paracetamol", "ibuprofen" of "vitamines".'
-];
-
-const toggleChat = () => {
-  isChatOpen.value = !isChatOpen.value;
-};
-
-const sendMessage = async () => {
-  if (!userInput.value.trim()) return;
-  
-  // Add user message
-  messages.value.push({ text: userInput.value, sender: 'user' });
-  
-  // Generate response based on user input
-  const response = generateResponse(userInput.value);
-  
-  // Clear input
-  userInput.value = '';
-  
-  // Scroll to bottom
-  await nextTick();
-  scrollToBottom();
-  
-  // Add some delay to simulate thinking
-  setTimeout(() => {
-    // Add bot's text response
-    messages.value.push({ 
-      text: response.text, 
-      sender: 'bot',
-      action: response.action
-    });
-    
-    // If there's a navigation action, add a clickable link
-    if (response.action && response.action.type === 'navigate') {
-      const linkText = 'Klik hier om direct naar de pagina te gaan';
-      messages.value.push({
-        text: linkText,
-        sender: 'bot-link',
-        action: response.action
+      this.messages.push({
+        role: "user",
+        content: this.newMessage,
       });
-    }
-    
-    nextTick(() => scrollToBottom());
-  }, 500);
+
+      const userMessage = this.newMessage;
+      this.newMessage = "";
+      this.isLoading = true;
+
+      try {
+        console.log("Sending message to server...");
+        const response = await fetch("http://localhost:8000/api/chat.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: userMessage,
+          }),
+        });
+
+        console.log("Response status:", response.status);
+        const data = await response.json();
+        console.log("Response data:", data);
+
+        if (data.success) {
+          this.messages.push({
+            role: "assistant",
+            content: data.response,
+          });
+        } else {
+          console.error("Error from server:", data.message);
+          this.messages.push({
+            role: "assistant",
+            content: "Sorry, er is een fout opgetreden: " + data.message,
+          });
+        }
+      } catch (error) {
+        console.error("Error sending message:", error);
+        this.messages.push({
+          role: "assistant",
+          content: "Sorry, er is een probleem met de verbinding. Controleer of de servers draaien.",
+        });
+      } finally {
+        this.isLoading = false;
+      }
+    },
+  },
 };
-
-const generateResponse = (input) => {
-  const lowercaseInput = input.toLowerCase();
-  
-  // Check for keyword matches
-  for (const keyword in responses) {
-    if (lowercaseInput.includes(keyword)) {
-      return responses[keyword];
-    }
-  }
-  
-  // Use fallback response if no keywords match
-  const fallbackText = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-  return { text: fallbackText, action: null };
-};
-
-const handleActionClick = (action) => {
-  if (action && action.type === 'navigate') {
-    // Send a message to confirm navigation
-    messages.value.push({ 
-      text: 'Ik navigeer u nu naar de juiste pagina...', 
-      sender: 'bot' 
-    });
-    
-    // Wait a moment and then navigate
-    setTimeout(() => {
-      router.push({
-        path: action.path,
-        query: action.query || {}
-      });
-      
-      // Close the chat after navigation
-      isChatOpen.value = false;
-    }, 1000);
-  }
-};
-
-const scrollToBottom = () => {
-  if (messagesContainer.value) {
-    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
-  }
-};
-
-// Scroll to bottom when chat is opened or messages change
-watch(isChatOpen, (newValue) => {
-  if (newValue) {
-    nextTick(() => scrollToBottom());
-  }
-});
-
-watch(messages, () => {
-  nextTick(() => scrollToBottom());
-}, { deep: true });
 </script>
 
 <style scoped>
-.chat-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
-.chat-button {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: #3066f6;
-  color: white;
-  border: none;
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
-}
-
-.chat-button:hover {
-  transform: scale(1.05);
-}
-
-.chat-open {
-  width: 350px;
-  height: 450px;
-  border-radius: 10px;
-  background-color: white;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.chat-header {
-  background-color: #3066f6;
-  color: white;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-
-.chat-header h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.chat-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - 56px);
-}
-
-.chat-messages {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.message {
-  max-width: 80%;
-  padding: 10px 15px;
-  border-radius: 18px;
-  margin-bottom: 5px;
-  word-wrap: break-word;
-}
-
-.message.user {
-  align-self: flex-end;
-  background-color: #3066f6;
-  color: white;
-  border-bottom-right-radius: 5px;
-}
-
-.message.bot {
-  align-self: flex-start;
-  background-color: #f0f0f0;
-  color: #333;
-  border-bottom-left-radius: 5px;
-}
-
-.message.bot-link {
-  align-self: flex-start;
-  background-color: #e5f2ff;
-  color: #3066f6;
-  border: 1px solid #3066f6;
-  border-bottom-left-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.message.bot-link:hover {
-  background-color: #d0e8ff;
-}
-
-.chat-input {
-  padding: 10px;
-  border-top: 1px solid #eee;
-  display: flex;
-}
-
-.chat-input input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  outline: none;
-}
-
-.chat-input button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background-color: #3066f6;
-  color: white;
-  margin-left: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (max-width: 480px) {
-  .chat-open {
-    width: 90vw;
-    height: 70vh;
-    bottom: 10px;
-    right: 10px;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 </style> 
