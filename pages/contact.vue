@@ -53,7 +53,6 @@
           <div class="info-block chatbot">
             <h3>24/7 Chatbot Assistent</h3>
             <p>Onze virtuele assistent staat 24/7 klaar om uw vragen te beantwoorden.</p>
-            <button>Start chat</button>
           </div>
         </div>
       </div>
