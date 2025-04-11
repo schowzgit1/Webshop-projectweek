@@ -1,44 +1,71 @@
-<!--
-    ============================================
-    Author: Apothecare Team
-    Description: Login API endpoint for Apothecare
-    ============================================
--->
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json");
 
-require_once '../config/db.php';
-$conn = require_once '../config/db.php';
+$is_invalid = false;
 
-$data = json_decode(file_get_contents("php://input"), true);
-
-if (!isset($data["email"]) || !isset($data["password"])) {
-    echo json_encode(["success" => false, "error" => "Vul alle velden in"]);
-    exit();
-}
-
-$email = $conn->real_escape_string($data["email"]);
-$password = $data["password"];
-
-$sql = "SELECT * FROM users WHERE email = '$email'";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    
+    $mysqli = require __DIR__ . "/database.php";
+    
+    $sql = sprintf("SELECT * FROM user
+                    WHERE email = '%s'",
+                   $mysqli->real_escape_string($_POST["email"]));
+    
+    $result = $mysqli->query($sql);
+    
     $user = $result->fetch_assoc();
-    if (password_verify($password, $user['password'])) {
-        session_start();
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['email'] = $user['email'];
-        echo json_encode(["success" => true, "message" => "Succesvol ingelogd"]);
-    } else {
-        echo json_encode(["success" => false, "error" => "Verkeerd wachtwoord of email"]);
+    
+    if ($user) {
+        
+        if (password_verify($_POST["password"], $user["password_hash"])) {
+            
+            session_start();
+            
+            session_regenerate_id();
+            
+            $_SESSION["user_id"] = $user["id"];
+            
+            header("Location: index.php");
+            exit;
+        }
     }
-} else {
-    echo json_encode(["success" => false, "error" => "Verkeerd wachtwoord of email"]);
+    
+    $is_invalid = true;
 }
 
-$conn->close();
-?> 
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+</head>
+<body>
+    
+    <h1>Login</h1>
+    
+    <?php if ($is_invalid): ?>
+        <em>Invalid login</em>
+    <?php endif; ?>
+    
+    <form method="post">
+        <label for="email">email</label>
+        <input type="email" name="email" id="email"
+               value="<?= htmlspecialchars($_POST["email"] ?? "") ?>">
+        
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        
+        <button>Log in</button>
+    </form>
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
