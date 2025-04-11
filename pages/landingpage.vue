@@ -16,8 +16,10 @@
                 advies
             </div>
 
-            <button>Inloggen</button>
-            <button class="primary">Start met bestellen</button>
+            <div class="button-container">
+                <NuxtLink v-if="!isLoggedIn" to="/login" class="button">Inloggen</NuxtLink>
+                <NuxtLink v-else to="/medicijnen" class="button primary">Start met bestellen</NuxtLink>
+            </div>
         </div>
         <div>
             <img
@@ -44,6 +46,32 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
+const isLoggedIn = ref(false)
+
+const checkLoginStatus = () => {
+    if (process.client) {
+        const user = localStorage.getItem('user')
+        isLoggedIn.value = !!user
+    }
+}
+
+onMounted(() => {
+    if (process.client) {
+        checkLoginStatus()
+        window.addEventListener('storage', checkLoginStatus)
+    }
+})
+
+onBeforeUnmount(() => {
+    if (process.client) {
+        window.removeEventListener('storage', checkLoginStatus)
+    }
+})
+</script>
 
 <style scoped>
 * {
@@ -128,27 +156,29 @@
     gap: 10px;
 }
 
-button {
+button, .button {
     background-color: transparent;
     color: rgba(0, 0, 0, 0.5);
     border: none;
     padding: 10px 20px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
-button.primary {
+button.primary, .button.primary {
     background-color: #2466e1;
     color: white;
     border: 2px solid #2466e1;
     border-radius: 5px;
 }
 
-button:hover {
+button:hover, .button:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-button.primary:hover {
+button.primary:hover, .button.primary:hover {
     background-color: darkblue;
 }
 
@@ -165,5 +195,11 @@ button.primary:hover {
 #main div img {
     width: 100%;
     height: auto;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
 }
 </style>

@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/tailwindcss": "^6.13.2",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",

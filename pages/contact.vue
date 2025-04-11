@@ -1,3 +1,9 @@
+<!--
+    ============================================
+    Author: Apothecare Team
+    Description: Contact page
+    ============================================
+-->
 <template>
   <div class="contact-page">
 
@@ -9,37 +15,47 @@
       <div class="contact-container">
         <!-- form -->
         <form @submit.prevent="submitForm" class="contact-form">
-    <h2>Stuur ons een bericht</h2>
+          <h2>Stuur ons een bericht</h2>
 
-    <label>Naam</label>
-    <input v-model="name" type="text" required />
+          <div class="form-group">
+            <label for="name">Naam</label>
+            <input id="name" v-model="name" type="text" required class="form-input" />
+          </div>
 
-    <label>E-mail</label>
-    <input v-model="email" type="email" required />
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input id="email" v-model="email" type="email" required class="form-input" />
+          </div>
 
-    <label>Onderwerp</label>
-    <select v-model="subject">
-      <option>Algemene vraag</option>
-      <option>Support</option>
-      <option>Feedback</option>
-    </select>
+          <div class="form-group">
+            <label for="subject">Onderwerp</label>
+            <select id="subject" v-model="subject" class="form-input">
+              <option>Algemene vraag</option>
+              <option>Support</option>
+              <option>Feedback</option>
+            </select>
+          </div>
 
-    <label>Bericht</label>
-    <textarea v-model="message" required></textarea>
+          <div class="form-group">
+            <label for="message">Bericht</label>
+            <textarea id="message" v-model="message" required class="form-input"></textarea>
+          </div>
 
-    <button type="submit" :disabled="loading">
-      {{ loading ? "Versturen..." : "Verstuur bericht" }}
-    </button>
+          <button type="submit" :disabled="loading" class="btn-primary">
+            {{ loading ? "Versturen..." : "Verstuur bericht" }}
+          </button>
 
-    <p v-if="responseMessage" :class="responseClass">{{ responseMessage }}</p>
-  </form>
+          <div v-if="responseMessage" :class="['response-message', responseClass]">
+            {{ responseMessage }}
+          </div>
+        </form>
 
         <!-- contact information -->
         <div class="contact-info">
           <div class="info-block">
             <h3>Direct contact</h3>
             <p>📞 +31 (0)20 123 4567</p>
-            <p>📧 info@smartapotheek.nl</p>
+            <p>📧 info@apothecare.nl</p>
             <p>📍 Hoofdstraat 123, 1234 AB Amsterdam</p>
           </div>
 
@@ -53,6 +69,7 @@
           <div class="info-block chatbot">
             <h3>24/7 Chatbot Assistent</h3>
             <p>Onze virtuele assistent staat 24/7 klaar om uw vragen te beantwoorden.</p>
+            <button class="btn-secondary">Start chat</button>
           </div>
         </div>
       </div>
@@ -62,45 +79,167 @@
 
 <style scoped>
 /* main styles */
-.contact-page { font-family: Arial, sans-serif; color: #333; }
-h1 { margin-bottom: 10px; font-weight: bold; font-size: 40px;}
-h2, h3, h4 { margin-bottom: 10px; font-weight: bold; }
+.contact-page { 
+  font-family: Arial, sans-serif; 
+  color: #333; 
+  padding: 20px 0;
+}
 
+h1 { 
+  margin-bottom: 10px; 
+  font-weight: bold; 
+  font-size: 36px;
+  color: #3066f6;
+}
 
+h2, h3, h4 { 
+  margin-bottom: 10px; 
+  font-weight: bold; 
+}
 
 /* content */
-.contact-content { text-align: center; padding: 40px; }
+.contact-content { 
+  text-align: center; 
+  padding: 20px; 
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .contact-container {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  max-width: 900px; margin: 0 auto; gap: 30px;
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start;
+  margin: 40px auto 0; 
+  gap: 30px;
 }
 
 /* form */
 .contact-form {
-  flex: 1; background: #f8f9fa; padding: 20px; border-radius: 8px;
-  display: flex; flex-direction: column; text-align: left;
+  flex: 1; 
+  background: white; 
+  padding: 25px; 
+  border-radius: 8px;
+  display: flex; 
+  flex-direction: column; 
+  text-align: left;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.contact-form input, .contact-form select, .contact-form textarea {
-  width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;
-  border-radius: 5px;
+
+.form-group {
+  margin-bottom: 20px;
 }
-.contact-form button {
-  background: #236bde; color: white; padding: 10px; border: none;
-  border-radius: 5px; cursor: pointer;
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  border-color: #3066f6;
+  outline: none;
+}
+
+/* buttons */
+.btn-primary {
+  width: 100%;
+  background-color: #3066f6;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background-color: #2050c8;
+}
+
+.btn-primary:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #3066f6;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.btn-secondary:hover {
+  background-color: #2050c8;
 }
 
 /* contact information */
 .contact-info {
-  flex: 1; display: flex; flex-direction: column; gap: 20px;
-}
-.info-block {
-  background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: left;
-}
-.chatbot button {
-  background: #236bde; color: white; padding: 5px 15px; border: none;
-  border-radius: 5px; cursor: pointer; margin-top: 10px;
+  flex: 1; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px;
 }
 
+.info-block {
+  background: white; 
+  padding: 20px; 
+  border-radius: 8px; 
+  text-align: left;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* response message styling */
+.response-message {
+  margin-top: 15px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.success {
+  background-color: #e6fffa;
+  color: #047857;
+  border: 1px solid #047857;
+}
+
+.error {
+  background-color: #ffe5e5;
+  color: #e53e3e;
+  border: 1px solid #e53e3e;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+  }
+  
+  .contact-form, .contact-info {
+    width: 100%;
+  }
+  
+  h1 {
+    font-size: 28px;
+  }
+}
 </style>
 
 <script setup>
@@ -136,30 +275,40 @@ const submitForm = async () => {
 
   loading.value = true;
 
-  const { data, error } = await useFetch("http://localhost/webshop-projectweek/server/api/contact.php", {
-    method: "POST",
-    body: {
-      name: name.value,
-      email: email.value,
-      subject: subject.value,
-      message: message.value,
-    },
-  });
+  try {
+    const response = await fetch("http://localhost:8000/api/contact.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name.value,
+        email: email.value,
+        subject: subject.value,
+        message: message.value,
+      }),
+    });
 
-  if (error.value) {
-    responseMessage.value = "Kan geen verbinding maken met de server. Server is off";
+    const data = await response.json();
+
+    if (data.success) {
+      responseMessage.value = "Uw bericht is verzonden!";
+      responseClass.value = "success";
+      // Reset form fields on success
+      name.value = "";
+      email.value = "";
+      subject.value = "Algemene vraag";
+      message.value = "";
+    } else {
+      responseMessage.value = "Fout: " + (data.error || "Onbekend probleem.");
+      responseClass.value = "error";
+    }
+  } catch (error) {
+    console.error("Connection error:", error);
+    responseMessage.value = "Kan geen verbinding maken met de server. Controleer of de server draait.";
     responseClass.value = "error";
-  } else if (data.value?.success) {
-    responseMessage.value = "Uw bericht is verzonden!";
-    responseClass.value = "success";
-    name.value = "";
-    email.value = "";
-    message.value = "";
-  } else {
-    responseMessage.value = "Fout: " + (data.value?.error || "Onbekend probleem.");
-    responseClass.value = "error";
+  } finally {
+    loading.value = false;
   }
-
-  loading.value = false;
 };
 </script>

@@ -138,6 +138,19 @@ const addToCart = (medicine) => {
   // Here you would implement actual cart functionality
 };
 
+// Function to toggle active category
+const toggleCategory = (categoryId) => {
+  // If we click the same category, toggle it off (show all)
+  if (selectedCategory.value === categoryId) {
+    selectedCategory.value = 'alle';
+  } else {
+    selectedCategory.value = categoryId;
+  }
+  
+  // Update URL without reloading the page
+  updateQueryParams();
+};
+
 // Function to set active category
 const setCategory = (categoryId) => {
   selectedCategory.value = categoryId;

@@ -41,7 +41,7 @@
       <div class="p-4 border-b">
         <h3 class="text-lg font-semibold">AI Assistent</h3>
         <p class="text-sm text-gray-500">
-          Ik ben een AI-assistent. Hoe kan ik je helpen?
+          Ik ben een AI-/assistent. Hoe kan ik je helpen?
         </p>
       </div>
 
